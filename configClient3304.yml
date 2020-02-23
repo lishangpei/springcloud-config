@@ -6,8 +6,8 @@ server:
   port: 6001
 spring:
   profiles: dev
-  # application:
-  #   name: config-client-dev-6001
+  application:
+    name: config-client-dev-${server.port}
 
 
 ---
@@ -15,12 +15,14 @@ server:
   port: 6002
 spring:
   profiles: test
-  # application:
-  #   name: config-client-test-6002
+  application:
+    name: config-client-test-${server.port}
 
-# eureka:
-#   instance:
-#     instance-id: config-client-test-6002
-#   client:
-#     service-url:
-#       defaultZone: http://eureka7001.com
+eureka:
+  client:
+    service-url:
+      #做集群需要关联集群的eureka服务器的地址,其实端口号都应该是7001，
+      #关联的只是服务器地址，这里因为只有一台电脑，就用了端口号代替
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: config-client-test-${server.port} #修改eureka默认描述信息就是status
